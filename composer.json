@@ -1,0 +1,41 @@
+{
+    "name": "santander/payment-library",
+    "description": "Biblioteca PHP para geração de QR codes, boletos e pagamentos PIX",
+    "type": "library",
+    "license": "MIT",
+        "authors": [
+        {
+            "name": "Diogenes Estevão",
+            "email": "diogenesderm@hotmail.com"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "composer",
+            "url": "https://packagist.org",
+            "options": {
+                "ssl": {
+                    "verify_peer": false
+                }
+            }
+        }
+    ],
+
+    "require": {
+        "php": ">=8.1",
+       "dompdf/dompdf": "^2.0" 
+    },
+    "require-dev": {
+       
+    },
+    "autoload": {
+        "psr-4": {
+            "Santander\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Santander\\Tests\\": "tests/"
+        }
+    }
+}

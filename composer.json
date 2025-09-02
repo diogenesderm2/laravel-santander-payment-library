@@ -1,5 +1,5 @@
 {
-    "name": "santander/payment-library",
+    "name": "laravel-santander/payment-library",
     "description": "Biblioteca PHP para geração de QR codes, boletos e pagamentos PIX",
     "type": "library",
     "license": "MIT",

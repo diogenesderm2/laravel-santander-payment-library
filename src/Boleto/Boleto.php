@@ -1,5 +1,5 @@
 <?php
-namespace Santander\Boleto\Boleto;
+namespace Santander\Boleto;
 
 class Boleto 
 {

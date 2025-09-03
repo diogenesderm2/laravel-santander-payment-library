@@ -1,5 +1,5 @@
 <?php
-namespace Santander\Token\Token;
+namespace Santander\Token;
 
 class Token
 {

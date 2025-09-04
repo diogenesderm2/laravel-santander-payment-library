@@ -3,7 +3,7 @@
     "description": "Biblioteca PHP para geração de QR codes, boletos e pagamentos PIX",
     "type": "library",
     "license": "MIT",
-        "authors": [
+    "authors": [
         {
             "name": "Diogenes Estevão",
             "email": "diogenesderm@hotmail.com"
@@ -20,18 +20,25 @@
             }
         }
     ],
-
     "require": {
         "php": ">=8.1",
-       "dompdf/dompdf": "^2.0",
-       "guzzlehttp/guzzle": "^7.0" 
+        "dompdf/dompdf": "^2.0",
+        "guzzlehttp/guzzle": "^7.0",
+        "illuminate/support": "^10.0|^11.0",
+        "illuminate/console": "^10.0|^11.0"
     },
-    "require-dev": {
-       
-    },
+    "require-dev": {},
     "autoload": {
         "psr-4": {
             "Santander\\": "src/"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Santander\\Providers\\SantanderServiceProvider",
+                "Santander\\Providers\\SantanderInstallCommand"
+            ]
         }
     },
     "autoload-dev": {

@@ -36,6 +36,9 @@ class SantanderInstallCommand extends Command
         // 4. Adicionar variáveis ao .env
         $this->addEnvironmentVariables();
 
+        // 5. Adicionar configuração ao services.php
+        $this->addToServicesConfig();
+
         $this->info('✅ Santander Payment Library instalada com sucesso!');
         $this->newLine();
         $this->warn('📝 Próximos passos:');
@@ -48,7 +51,7 @@ class SantanderInstallCommand extends Command
     {
         $envPath = base_path('.env');
         $envExamplePath = base_path('.env.example');
-        
+
         $envVars = [
             'SANTANDER_URL=https://trust-open.api.santander.com.br/auth/oauth/v2/token',
             'SANTANDER_CLIENT_ID=your_client_id_here',
@@ -60,7 +63,7 @@ class SantanderInstallCommand extends Command
         foreach ([$envPath, $envExamplePath] as $file) {
             if (File::exists($file)) {
                 $content = File::get($file);
-                
+
                 foreach ($envVars as $var) {
                     $key = explode('=', $var)[0];
                     if (!str_contains($content, $key)) {
@@ -69,7 +72,54 @@ class SantanderInstallCommand extends Command
                 }
             }
         }
-        
+
         $this->info('✅ Variáveis de ambiente adicionadas ao .env');
+    }
+
+    private function addToServicesConfig()
+    {
+        $servicesPath = config_path('services.php');
+
+        if (!File::exists($servicesPath)) {
+            $this->error('❌ Arquivo services.php não encontrado!');
+            return;
+        }
+
+        $content = File::get($servicesPath);
+
+        // Verificar se a configuração do Santander já existe
+        if (str_contains($content, "'santander'")) {
+            $this->warn('⚠️  Configuração do Santander já existe no services.php');
+            return;
+        }
+
+        // Configuração do Santander para adicionar
+        $santanderConfig = "
+    'santander' => [
+        'url' => env('SANTANDER_URL', 'https://trust-open.api.santander.com.br/auth/oauth/v2/token'),
+        'client_id' => env('SANTANDER_CLIENT_ID'),
+        'client_secret' => env('SANTANDER_CLIENT_SECRET'),
+        'certificates' => [
+            'crt' => env('SANTANDER_CERTIFICATE_CRT', 'certificates/santander/certificate.crt'),
+            'key' => env('SANTANDER_CERTIFICATE_KEY', 'certificates/santander/private.key'),
+        ],
+        'ssl' => [
+            'verify_peer' => env('SANTANDER_SSL_VERIFY_PEER', false),
+            'verify_host' => env('SANTANDER_SSL_VERIFY_HOST', false),
+        ],
+    ],";
+
+        // Encontrar a posição antes do fechamento do array
+        $pattern = '/\];\s*$/';
+        if (preg_match($pattern, $content)) {
+            $newContent = preg_replace($pattern, $santanderConfig . "\n];", $content);
+
+            File::put($servicesPath, $newContent);
+            $this->info('✅ Configuração do Santander adicionada ao services.php');
+        } else {
+            $this->error('❌ Não foi possível adicionar a configuração ao services.php');
+            $this->line('Por favor, adicione manualmente a seguinte configuração:');
+            $this->line($santanderConfig);
+        }
     }
 }

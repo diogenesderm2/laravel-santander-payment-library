@@ -13,19 +13,18 @@ class Token
     private string $client_secret;
     private string $url;
 
-    public function __construct(string $certificate_crt, string $certificate_key, string $client_id, string $client_secret, string $url)
+    public function __construct()
     {
-        $this->certificate_crt = $certificate_crt;
-        $this->certificate_key = $certificate_key;
-        $this->client_id = $client_id;
-        $this->client_secret = $client_secret;
-        $this->url = $url;
+        // Usar configurações do Laravel se os parâmetros não forem fornecidos
+        $this->certificate_crt = config('services.santander.certificates.crt');
+        $this->certificate_key = config('services.santander.certificates.key');
+        $this->client_id = config('services.santander.client_id');
+        $this->client_secret = config('services.santander.client_secret');
+        $this->url = config('services.santander.url');
     }
 
     public function getToken()
-
     {
-        
         $client = new Client();
         $headers = [
             'Content-Type' => 'application/x-www-form-urlencoded',
@@ -33,12 +32,13 @@ class Token
         ];
         $options = [
             'form_params' => [
-                'client_id' => 'zbPsz2dlHcAOSYKKU9esiSC6da8tb2Q8',
-                'client_secret' => 'wOZuBKywGo8Nj7Qk',
+                'client_id' => $this->client_id,
+                'client_secret' => $this->client_secret,
                 'grant_type' => 'client_credentials'
             ]
         ];
-        $request = new Request('POST', 'https://trust-sandbox.api.santander.com.br/auth/oauth/v2/token', $headers);
+        // Usar a URL da configuração ao invés de hardcoded
+        $request = new Request('POST', $this->url, $headers);
         $res = $client->sendAsync($request, $options)->wait();
         echo $res->getBody();
     }

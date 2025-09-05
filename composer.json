@@ -36,8 +36,11 @@
     "extra": {
         "laravel": {
             "providers": [
-                "Santander\\Providers\\SantanderServiceProvider",
-                "Santander\\Providers\\SantanderInstallCommand"
+                "Santander\\Providers\\SantanderServiceProvider"
+            ],
+            "commands": [
+                "Santander\\Console\\Commands\\SantanderInstallCommand"
+
             ]
         }
     },

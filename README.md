@@ -1,5 +1,4 @@
 # Laravel Santander Payment Library
-- composer require laravel-santander/payment-library
 
 Biblioteca PHP para geração de QR codes, boletos e pagamentos PIX integrada com a API do Santander.
 

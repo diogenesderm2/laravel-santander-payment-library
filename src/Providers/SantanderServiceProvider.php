@@ -1,5 +1,5 @@
 <?php
-namespace Santander\Prividers;
+namespace Santander\Providers;
 use Illuminate\Support\ServiceProvider;
 use Santander\Console\Commands\SantanderInstallCommand;
 
